@@ -3,8 +3,9 @@ module.exports = (robot) ->
   robot.router.get '/script.js', (req, res) ->
     fs = require 'fs'
     coffee = require 'coffee-script'
+    console.log __dirname
 
-    fs.readFile 'public/script.coffee', 'utf8', (err, data) ->
+    fs.readFile "#{__dirname}/../public/script.coffee", 'utf8', (err, data) ->
         res.send coffee.compile data
 
   robot.router.post '/', (req, res) ->
