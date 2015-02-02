@@ -3,7 +3,7 @@
 set -e
 
 npm install
-export EXPRESS_STATIC=public
+export EXPRESS_STATIC="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")public"
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
 
 exec node_modules/.bin/hubot "$@"
