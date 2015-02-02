@@ -1,23 +1,34 @@
-log = (sender, msg) ->
-  div = $("#log")
-  div.append "<div class=\"entry\">"
-  div.append "<div class=\"sender\">#{sender}</div>"
-  div.append "<div class=\"message\">"
+class HubotWebscale
 
-  if msg.match /\.(jpg|png|gif)$/
-    div.append "<img src=\"#{msg}\"/>"
-  else
-    div.append msg.replace(/\n/g, "<br />")
+  constructor: ->
+    @socket = io.connect();
+    $("form").submit @send
+    @socket.on 'message', @receive
 
-  div.append "</div>"
-  div.append "</div>"
-  div.scrollTop(div[0].scrollHeight)
+  receive: (data) =>
+    for line in data
+      @log "Hubot", line
 
-$("form").submit (e) ->
-  e.preventDefault()
-  command = $("#command").val()
-  log "User", command
-  $.post "/", command: command, (data) ->
-    log "Hubot", data if data
-  $("#command").val("")
-  false
+  send: (e) =>
+    e.preventDefault()
+    msg = $("#command").val()
+    @log "User", msg
+    @socket.emit('message', msg)
+    $("#command").val("")
+
+  log: (sender, msg) ->
+    div = $("#log")
+    div.append "<div class=\"entry\">"
+    div.append "<div class=\"sender\">#{sender}</div>"
+    div.append "<div class=\"message\">"
+
+    if msg.match /\.(jpg|png|gif)$/
+      div.append "<img src=\"#{msg}\"/>"
+    else
+      div.append msg.replace(/\n/g, "<br />")
+
+    div.append "</div>"
+    div.append "</div>"
+    div.scrollTop(div[0].scrollHeight)
+
+new HubotWebscale()
