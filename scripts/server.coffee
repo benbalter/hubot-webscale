@@ -24,5 +24,6 @@ module.exports = (robot) ->
       robot.receive msg
 
   robot.router.get '/script.js', (req, res) ->
-    fs.readFile "#{__dirname}/../public/script.coffee", 'utf8', (err, data) ->
+    res.header "Content-Type", "text/javascript"
+    fs.readFile path.resolve(root, "public/script.coffee"), 'utf8', (err, data) ->
       res.send coffee.compile data
