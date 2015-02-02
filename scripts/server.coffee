@@ -1,8 +1,11 @@
 fs = require 'fs'
 coffee = require 'coffee-script'
+express = require 'express'
 {TextMessage} = require 'hubot'
 
 module.exports = (robot) ->
+  robot.router.use('/node_components', express.static(__dirname + '../node_components'));
+
   io = require('socket.io').listen(robot.server)
   io.sockets.on 'connection', (socket) ->
 
