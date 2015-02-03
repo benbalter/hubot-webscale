@@ -8,7 +8,8 @@ io = require 'socket.io'
 
 module.exports = (robot) ->
 
-  root = path.resolve(__dirname, "../")
+  root = process.env.PWD
+  console.log root
   robot.router.use(express.static(path.resolve(root, "public")))
   robot.router.use coffee
     src: root + "/public",
