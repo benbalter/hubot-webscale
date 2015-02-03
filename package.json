@@ -28,7 +28,8 @@
   },
   "main": "hubot",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "bin/hubot"
   },
   "repository": {
     "type": "git",
