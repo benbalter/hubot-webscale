@@ -19,6 +19,10 @@ class Webscale extends Adapter
     @robot.logger.debug "REPLYING: #{strings}"
     @socket.emit 'message', strings
 
+  receive: (txt) =>
+    @robot.logger.debug "RECEIVED: #{txt}"
+    @robot.receive @message(txt)
+
   root: ->
     @_root ||= path.resolve __dirname, "../"
 
@@ -38,14 +42,15 @@ class Webscale extends Adapter
       src: path.resolve(@root(),"public")
       compress: true
 
+    # Init the websocket server
     io = io.listen(@robot.server)
     io.sockets.on 'connection', (socket) =>
       @socket = socket
 
-      socket.on 'message', (txt) =>
-        @robot.logger.debug "Recieved: #{txt}"
-        @robot.receive @message(txt)
+      # Pass user commands to Hubot
+      @socket.on 'message', @receive
 
+    # Let Hubot know to continue the load process
     @emit 'connected'
 
 exports.use = (robot) ->
