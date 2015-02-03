@@ -1,6 +1,6 @@
 {
   "name": "hubot-webscale",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "author": "Ben Balter <ben.balter@github.com>",
   "description": "A simple helpful robot for your Company",
@@ -25,5 +25,17 @@
   },
   "engines": {
     "node": "0.10.x"
+  },
+  "main": "hubot",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbalter/hubot-webscale"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benbalter/hubot-webscale/issues"
   }
 }

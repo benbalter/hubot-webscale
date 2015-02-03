@@ -4,4 +4,5 @@ set -e
 
 npm install
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
-exec node_modules/.bin/hubot --name "hubot" --alias "/" --require $(cd "$(dirname "$1")" && pwd)/$(basename "$1")/scripts
+pwd = $(cd "$(dirname "$1")" && pwd)/$(basename "$1")
+exec node_modules/.bin/hubot --name "hubot" --alias "/" --require $pwd/scripts
