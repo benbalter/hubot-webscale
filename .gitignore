@@ -3,3 +3,4 @@ node_modules
 .hubot_history
 Gemfile.lock
 .bundle
+Gemfile
