@@ -1,0 +1,14 @@
+{
+  "name": "hubot-webscale",
+  "version": "0.0.1",
+  "homepage": "https://github.com/benbalter/hubot-webscale",
+  "authors": [
+    "Ben Balter <ben.balter@github.com>"
+  ],
+  "main": "bin/hubot",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
