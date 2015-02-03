@@ -6,6 +6,8 @@ coffee = require 'coffee-middleware'
 io = require 'socket.io'
 {TextMessage} = require 'hubot'
 
+console.log "FILE LOADED"
+
 module.exports = (robot) ->
 
   root = process.env.PWD

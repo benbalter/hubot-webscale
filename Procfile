@@ -1,1 +1,1 @@
-web: bin/hubot -n hubot
+app: bin/hubot -n hubot
