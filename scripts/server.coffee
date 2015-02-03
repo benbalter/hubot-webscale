@@ -1,3 +1,9 @@
+# Description:
+#   Hubot, but at web scale
+#
+# Commands:
+#   Any - the resonse, but via websockets
+#
 fs = require 'fs'
 coffee = require 'coffee-script'
 express = require 'express'
