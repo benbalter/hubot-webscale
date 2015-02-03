@@ -1,5 +1,4 @@
 fs = require 'fs'
-coffee = require 'coffee-script'
 express = require 'express'
 path = require 'path'
 coffee = require 'coffee-middleware'
