@@ -1,1 +1,1 @@
-web: ./bin/hubot
+web: bin/hubot
