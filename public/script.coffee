@@ -4,6 +4,8 @@ class HubotWebscale
     @socket = io.connect();
     $("form").submit @send
     @socket.on 'message', @receive
+    $("img").load ->
+      alert("loaded")
 
   receive: (data) =>
     for line in data
@@ -12,23 +14,33 @@ class HubotWebscale
   send: (e) =>
     e.preventDefault()
     msg = $("#command").val()
-    @log "User", msg
     @socket.emit('message', msg)
+    @log "User", msg
     $("#command").val("")
 
-  log: (sender, msg) ->
+  scroll: ->
     div = $("#log")
-    div.append "<div class=\"entry\">"
-    div.append "<div class=\"sender\">#{sender}</div>"
-    div.append "<div class=\"message\">"
+    div.scrollTop(div[0].scrollHeight)
+
+  log: (sender, msg) ->
+    log   = $("#log")
+    entry = $("<div />", class: "entry", id: Date.now())
+    left  = $("<div />", class: "sender #{sender.toLowerCase()}").text(sender)
+    right = $("<div />", class: "message #{sender.toLowerCase()}")
 
     if msg.match /\.(jpg|png|gif)$/
-      div.append "<img src=\"#{msg}\"/>"
+      img = $("<img />", src: msg)
+      img.load @scroll
+      right.append img
+    else if msg.match /\n/
+      right.append $("<pre />").text(msg)
     else
-      div.append msg.replace(/\n/g, "<br />")
+      right.append $("<p />").text(msg)
 
-    div.append "</div>"
-    div.append "</div>"
-    div.scrollTop(div[0].scrollHeight)
+    entry.append left
+    entry.append right
+    log.append entry
+    @scroll()
+
 
 new HubotWebscale()
