@@ -38,7 +38,6 @@ class Webscale extends Adapter
     @robot.router.use coffee
       src: path.resolve(@root(),"public")
       compress: true
-      debug: true
 
     io = io.listen(@robot.server)
     io.sockets.on 'connection', (socket) =>

@@ -5,8 +5,5 @@ set -e
 npm install
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
 root=$(cd "$(dirname "$1")" && pwd)/$(basename "$1")
-echo "ROOT: ${root}"
-echo "PORT: ${PORT}"
 export NODE_PATH=${root}src
-export HUBOT_LOG_LEVEL=debug
 exec ${root}node_modules/.bin/hubot --adapter "webscale" --name "hubot" --alias "/"
