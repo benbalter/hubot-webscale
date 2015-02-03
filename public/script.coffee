@@ -4,8 +4,11 @@ class HubotWebscale
     @socket = io.connect();
     $("form").submit @send
     @socket.on 'message', @receive
-    $("img").load ->
-      alert("loaded")
+
+    @history = []
+    @history_index = -1
+
+    $("#command").keydown @getHistory
 
   receive: (data) =>
     for line in data
@@ -16,6 +19,8 @@ class HubotWebscale
     msg = $("#command").val()
     @socket.emit('message', msg)
     @log "User", msg
+    @history_index = -1
+    @history.unshift msg
     $("#command").val("")
 
   scroll: ->
@@ -42,5 +47,13 @@ class HubotWebscale
     log.append entry
     @scroll()
 
+  getHistory: (e) =>
+    return unless e.which == 38 || e.which == 40
+
+    switch(e.which)
+      when 38 then @history_index++ unless @history_index >= @history.length - 1 #up
+      when 40 then @history_index-- unless @history_index < 0 #down
+
+    $("#command").val @history[@history_index]
 
 new HubotWebscale()
