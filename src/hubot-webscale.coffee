@@ -3,34 +3,24 @@ express = require 'express'
 path = require 'path'
 coffee = require 'coffee-middleware'
 io = require 'socket.io'
-{TextMessage, Adapter} = require 'hubot'
+{TextMessage, EnterMessage, User, Adapter} = require 'hubot'
 
 class Webscale extends Adapter
 
   send: (envelope, strings...) ->
     @robot.logger.debug "SENDING: #{strings}"
-    @socket.emit 'message', strings
+    envelope.room.emit 'message', strings
 
   emote: (envelope, strings...) ->
     @robot.logger.debug "EMOTING: #{strings}"
-    @socket.emit 'message', strings
+    envelope.room.emit 'message', strings
 
   reply: (envelope, strings...) ->
     @robot.logger.debug "REPLYING: #{strings}"
-    @socket.emit 'message', strings
-
-  receive: (txt) =>
-    @robot.logger.debug "RECEIVED: #{txt}"
-    @robot.receive @message(txt)
+    envelope.room.emit 'message', strings
 
   root: ->
     @_root ||= path.resolve __dirname, "../"
-
-  user: ->
-    @_user ||= @robot.brain.userForId(1)
-
-  message: (txt) ->
-    new TextMessage(@user(), txt, Date.now())
 
   run: ->
     # Init public dir for serving static files
@@ -44,11 +34,16 @@ class Webscale extends Adapter
 
     # Init the websocket server
     io = io.listen(@robot.server)
-    io.sockets.on 'connection', (socket) =>
-      @socket = socket
 
-      # Pass user commands to Hubot
-      @socket.on 'message', @receive
+    io.sockets.on 'connection', (socket) =>
+      user = new User "user-#{Date.now()}", room: socket
+      @receive new EnterMessage(user)
+
+      socket.on "message", (msg) =>
+        @robot.logger.debug "RECEIVED: #{msg}"
+
+        # Pass user commands to Hubot
+        @receive new TextMessage(user, msg, "message-#{Date.now()}")
 
     # Let Hubot know to continue the load process
     @emit 'connected'
